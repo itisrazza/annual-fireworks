@@ -154,8 +154,9 @@ void finish ()
 int main (int argc, char *argv[])
 {
     if (argc < 2) {
-        SDL_Log("Usage: %s [time]", argv[0]);
-        SDL_Log("  time - UNIX epoch eg (1577836800 for 1/1/2020 at UTC)\n");
+        fprintf(stderr, "Usage: %s [time]\n\n", argv[0]);
+        fprintf(stderr, "time - UNIX epoch eg (1577836800 for 1/1/2020 at UTC)\n");
+        fprintf(stderr, "       or offset from current time (+120 for two minutes from now)\n");
 
         return 0;
     } else if (argc >= 2) {
