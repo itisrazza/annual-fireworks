@@ -13,3 +13,6 @@ extern SDL_Renderer *renderer;
 extern TTF_Font *font_text;
 extern TTF_Font *font_num;
 extern TTF_Font *font_numbig;
+
+double time_now ();
+double time_to ();

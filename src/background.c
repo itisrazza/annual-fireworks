@@ -32,12 +32,20 @@ void prep_background ()
 
 void render_background ()
 {
+    // fade out starting from 10 seconds
+    double fade = 1.0;
+    if (time_to() < 10.0) fade = time_to() / 10;
+    if (time_to() <  0.0) fade = 0.0;
+    if (time_to() < -0.0) fade = -time_to() / 5;
+    if (time_to() < -5)  fade = 1.0;
+
     // fill bg first
-    SDL_SetRenderDrawColor(renderer, 0, 0, 16, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, fade * 16, 255);
     SDL_RenderClear(renderer);
 
     // draw the stars (and update them)
-    SDL_SetRenderDrawColor(renderer, 64, 64, 128, 255);
+    if (time_to() < 0) return;
+    SDL_SetRenderDrawColor(renderer, fade * 64, fade * 64, fade * 128, 255);
     for (int i = 0; i < star_count; i++) {
         struct star *star = &stars[i];
         SDL_Rect rect = { RES_WIDTH - star->x, star->y,
