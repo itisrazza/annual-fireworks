@@ -6,6 +6,7 @@ struct star
     int x, y, z;
 };
 
+#define star_max_z 3
 #define star_count 500
 struct star stars[star_count];
 
@@ -18,7 +19,7 @@ void star_repurpose (struct star *star)
 {
     star->x = 0;
     star->y = rand() % RES_HEIGHT;
-    star->z = rand() % 3 + 1;
+    star->z = rand() % star_max_z + 1;
 }
 
 void prep_background ()
@@ -45,11 +46,12 @@ void render_background ()
 
     // draw the stars (and update them)
     if (time_to() < 0) return;
-    SDL_SetRenderDrawColor(renderer, fade * 64, fade * 64, fade * 128, 255);
     for (int i = 0; i < star_count; i++) {
         struct star *star = &stars[i];
+        double star_fade = (double)star->z / star_max_z;
         SDL_Rect rect = { RES_WIDTH - star->x, star->y,
                           star->z, star->z };
+        SDL_SetRenderDrawColor(renderer, star_fade * fade * 64, star_fade * fade * 64, star_fade * fade * 128, 255);
         SDL_RenderFillRect(renderer, &rect);
 
         star->x += star->z;

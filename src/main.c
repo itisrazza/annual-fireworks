@@ -168,10 +168,12 @@ int main (int argc, char *argv[])
         }
     }
 
-    // convert the string to time
+    // convert unix time to readable chunks
+    struct tm *target_tm = localtime(&target_time);
+    const char time_str[64];
+    strftime(time_str, 64, "%T at %A, %d %B, %Y", target_tm);
 
-
-    SDL_Log("Starting New Years showcase with time: %ld", target_time);
+    SDL_Log("Starting New Years showcase with time: %s", time_str);
     SDL_Log("Time left to event: %lf", time_to());
 
     // start the game

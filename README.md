@@ -29,6 +29,7 @@ To run it, just run `bin/new-year-2020` from the repo folder. It will show you t
 
 ```bash
 bin/new-year-2020 1577836800    # counts down to 1 Jan 2020 12AM (UTC)
+bin/new-year-2020 1577790000    # counts down to 1 Jan 2020 12AM (NZST)
 bin/new-year-2020 +120          # counts down to 2 minutes from now
 ```
 

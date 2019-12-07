@@ -25,7 +25,7 @@ void firework_repurpose (struct firework *fw)
     fw->x = rand() % RES_WIDTH;
     fw->y = 0;
     fw->explode = rand() % (RES_HEIGHT * 2 / 3) + RES_HEIGHT / 6;
-    fw->stars = (rand() % 3 == 0 ? 72 : 1) + rand() % 6;
+    fw->stars = 3 + rand() % 17;
 }
 
 ///
@@ -111,12 +111,12 @@ void render_fireworks ()
                 initial_fireworks = 0;
             }
 
-            SDL_Log("Firework %d: Repurposed", i);
+            // SDL_Log("Firework %d: Repurposed", i);
             firework_repurpose(fw);
         }
         
         if (fw->y < fw->explode) {
-            SDL_Log("Firework %d: Before explosion", i);
+            // SDL_Log("Firework %d: Before explosion", i);
             SDL_Rect rect = { fw->x, RES_HEIGHT - fw->y, 8, 8 };
             SDL_RenderCopy(renderer, firework_launch, NULL, &rect);
         } else if (fw->y >= fw->explode) {
