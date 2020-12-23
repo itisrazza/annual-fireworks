@@ -88,7 +88,7 @@ local function update(dt)
     end
 
     -- at 5 seconds past midnight, fade out "2021" and in the new year msg
-    if os.time() - DATE_TARGET >= 5 then
+    if os.time() - DATE_TARGET + DATE_OFFSET >= 5 then
         if digits_fade > 0.2 then
             digits_fade = digits_fade - dt
         end
@@ -178,7 +178,7 @@ local function draw()
                     FIREWORK_STAR,
                     center_x + dx * distance - 8 * size / 2,
                     center_y + dy * distance - 8 * size / 2 + 10 * math.pow(size, 2),
-                    firework.y / 10,
+                    firework.y / 100,
                     1, 1,
                     FIREWORK_STAR:getWidth() / 2,
                     FIREWORK_STAR:getHeight() / 2)

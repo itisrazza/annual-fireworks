@@ -9,7 +9,7 @@ local function update(dt)
     particle_update(dt)
     
     -- update the second counter
-    secs = DATE_TARGET - os.time()
+    secs = DATE_TARGET - os.time() + DATE_OFFSET
 
     -- update the texture if needed
     if secs ~= secs_old then
@@ -54,19 +54,20 @@ local function draw()
             BASE_WIDTH / 2,
             BASE_HEIGHT / 2,
             0,
-            math.pow(secs_scale, 10) + 1, 
-            math.pow(secs_scale, 10) + 1,
+            math.pow(secs_scale, 3) + 1, 
+            math.pow(secs_scale, 3) + 1,
             secs_render_old:getWidth() / 2,
             secs_render_old:getHeight() / 2)
     end
 
     if secs_render ~= nil then
-        lg.setColor(1, 1, 1, secs_opacity)
+        lg.setColor(1, 1, 1, math.pow(secs_opacity, 2))
         lg.draw(secs_render,
             BASE_WIDTH / 2,
             BASE_HEIGHT / 2,
             0,
-            secs_scale, secs_scale,
+            math.pow(secs_scale, 1/10), 
+            math.pow(secs_scale, 1/10),
             secs_render:getWidth() / 2,
             secs_render:getHeight() / 2)
     end

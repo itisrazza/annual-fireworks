@@ -2,9 +2,13 @@
 local lg = love.graphics
 lovesize = require("lib/lovesize")
 
-DATE_TARGET = 1609412400
--- DATE_TARGET = os.time() + 70
+DATE_TARGET = 1609412400    -- fancy computer number for jan 1 2021 (nzdt)
+DATE_TARGET = os.time() + 70
 
+-- time offset for streaming
+DATE_OFFSET = 0
+
+-- gfx
 BASE_WIDTH = 320
 BASE_HEIGHT = 180
 FONTS = {
@@ -12,9 +16,11 @@ FONTS = {
     bigg = nil
 }
 
+-- the current phase to call upon
 PHASE = nil
+local in_calibration = false
 
--- Pass desired resolution (can be called again to change it)
+-- init
 function love.load()
     lovesize.set(BASE_WIDTH, BASE_HEIGHT)
     lg.setDefaultFilter("nearest")
@@ -29,7 +35,7 @@ function love.load()
     PHASE = require "phases/datetime"
 end
 
--- Necessary to keep the correct values up to date
+-- update the size thing
 function love.resize(width, height)
     lovesize.resize(width, height)
 end
@@ -41,23 +47,29 @@ end
 
 -- How to draw stuff 
 function love.draw()
-    -- Example how to clear the letterboxes with a white color
-    -- love.graphics.clear(0, 0, 0)
-
     lovesize.begin()
 
+    -- draw the background and current phase
     draw_background()
     PHASE.draw()
 
     lovesize.finish()
-
-    -- Draw stuff using screen coords here
 end
 
--- Example how to use "inside" and "pos" functions:
+-- click handler (left click = full screen, right click = calibration)
 function love.mousepressed(x, y, button, istouch)
-    local fs = love.window.getFullscreen()
-    love.window.setFullscreen(not fs, 'desktop')
+    if button == 1 then
+        local fs = love.window.getFullscreen()
+        love.window.setFullscreen(not fs, 'desktop')
+    elseif button == 2 then
+        if not in_calibration then
+            in_calibration = true
+            PHASE = require "phases/calibration"
+        else
+            in_calibration = false
+            PHASE = require "phases/datetime"
+        end
+    end
 end
 
 --
