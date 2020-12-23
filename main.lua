@@ -3,7 +3,7 @@ local lg = love.graphics
 lovesize = require("lib/lovesize")
 
 DATE_TARGET = 1609412400
-DATE_TARGET = os.time() + 70
+DATE_TARGET = os.time() + 0
 
 BASE_WIDTH = 320
 BASE_HEIGHT = 180
@@ -23,6 +23,7 @@ function love.load()
     require("phases/particles")
     FONTS.smol = lg.newFont("data/nokiafc22.ttf", 8)
     FONTS.bigg = lg.newFont("data/IBMPlexSerif-Bold.ttf", 64)
+    FONTS.bigg = lg.newFont("data/IBMPlexSerif-Bold.ttf", 48)
 
     background_fade_to(0.5, 0.1, 0, 0)
     PHASE = require "phases/datetime"
@@ -36,7 +37,6 @@ end
 function love.update(dt)
     background_update(dt)
     PHASE.update(dt)
-    print(os.time())
 end
 
 -- How to draw stuff 
