@@ -2,6 +2,8 @@
 local lg = love.graphics
 lovesize = require("lib/lovesize")
 
+DATE_TARGET = os.time() + 3
+
 BASE_WIDTH = 320
 BASE_HEIGHT = 180
 FONTS = {
@@ -9,13 +11,20 @@ FONTS = {
     bigg = nil
 }
 
+PHASE = nil
+
 -- Pass desired resolution (can be called again to change it)
 function love.load()
     lovesize.set(BASE_WIDTH, BASE_HEIGHT)
     lg.setDefaultFilter("nearest")
 
     require("phases/background")
+    require("phases/particles")
     FONTS.smol = lg.newFont("data/nokiafc22.ttf", 8)
+    FONTS.bigg = lg.newFont("data/IBMPlexSerif-Bold.ttf", 64)
+
+    background_fade_to(0.5, 0.1, 0, 0)
+    PHASE = require "phases/datetime"
 end
 
 -- Necessary to keep the correct values up to date
@@ -25,25 +34,18 @@ end
 
 function love.update(dt)
     background_update(dt)
+    PHASE.update(dt)
 end
 
 -- How to draw stuff 
 function love.draw()
     -- Example how to clear the letterboxes with a white color
-    love.graphics.clear(0, 0, 0)
+    -- love.graphics.clear(0, 0, 0)
 
     lovesize.begin()
+
     draw_background()
-    
-    lg.setColor(0.8, 1, 0.6)
-    
-    local hour = lg.newText(FONTS.smol, os.date("%I:%M %p"))
-    lg.draw(hour, BASE_WIDTH / 2 - hour:getWidth() / 2, BASE_HEIGHT / 2 - hour:getHeight())
-    hour:release()
-    
-    local date = lg.newText(FONTS.smol, os.date("%A, %B %d, %Y"))
-    lg.draw(date, BASE_WIDTH / 2 - date:getWidth() / 2, BASE_HEIGHT / 2)
-    date:release()
+    PHASE.draw()
 
     lovesize.finish()
 
@@ -52,7 +54,7 @@ end
 
 -- Example how to use "inside" and "pos" functions:
 function love.mousepressed(x, y, button, istouch)
-    local fs, type = love.window.getFullscreen()
+    local fs = love.window.getFullscreen()
     love.window.setFullscreen(not fs, 'desktop')
 end
 
@@ -60,6 +62,11 @@ end
 --
 --
 
-function math.clip(min, val, max)
-    return math.max(min, math.min(val, max))
+function math.clip(min, val, max) return math.max(min, math.min(val, max)) end
+function math.round(val)
+    if math.fmod(val, 1) >= 0.5 then
+        return math.ceil(val)
+    else
+        return math.floor(val)
+    end
 end

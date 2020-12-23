@@ -1,4 +1,6 @@
 
+local lg = love.graphics
+
 local CHAR_HEIGHT = 36
 local CHAR_WIDTHS = {
     "0" = 32,
@@ -13,8 +15,10 @@ local CHAR_WIDTHS = {
     "9" = 30
 }
 
-local function init()
+local CHAR_IMAGE = nil
 
+local function init()
+    CHAR_IMAGE = 
 end
 
 local function render_big_number(number)
