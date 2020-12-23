@@ -4,7 +4,7 @@ Back for another new year's. This follows the same premise as last year's, but I
 
 This will be streamed over New Year's in NZDT (UTC+13) before I head out to have fun with my friends.
 
-I'll be hosting this year's one on [my YouTube channel](https://www.youtube.com/watch?v=n2MLLPqJyl4). You can also keep tabs on [the Twitter thread](https://twitter.com/thegreatrazz/status/1200701552341606400).
+I'll be hosting this year's one on [my YouTube channel](https://www.youtube.com/watch?v=n2MLLPqJyl4). You can also keep tabs on [the Twitter thread](https://twitter.com/thegreatrazz/status/1341834042820313088).
 
 ## Running
 
