@@ -24,7 +24,7 @@ local function draw()
     lg.draw(hour, BASE_WIDTH / 2 - hour:getWidth() / 2, BASE_HEIGHT / 2 - hour:getHeight())
     hour:release()
     
-    local date = lg.newText(FONTS.smol, os.date("%A, %B %d, %Y", os.time() + DATE_OFFSET))
+    local date = lg.newText(FONTS.smol, os.date("%B %d, %Y", os.time() + DATE_OFFSET))
     lg.draw(date, BASE_WIDTH / 2 - date:getWidth() / 2, BASE_HEIGHT / 2)
     date:release()
 end

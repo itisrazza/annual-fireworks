@@ -3,7 +3,7 @@ local lg = love.graphics
 lovesize = require("lib/lovesize")
 
 DATE_TARGET = 1609412400    -- fancy computer number for jan 1 2021 (nzdt)
-DATE_TARGET = os.time() + 70
+-- DATE_TARGET = os.time() + 70
 
 -- time offset for streaming
 DATE_OFFSET = 0
