@@ -3,7 +3,7 @@ local lg = love.graphics
 lovesize = require("lib/lovesize")
 
 DATE_TARGET = 1609412400
-DATE_TARGET = os.time() + 70
+-- DATE_TARGET = os.time() + 70
 
 BASE_WIDTH = 320
 BASE_HEIGHT = 180
