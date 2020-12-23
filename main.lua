@@ -2,7 +2,8 @@
 local lg = love.graphics
 lovesize = require("lib/lovesize")
 
-DATE_TARGET = os.time() + 3
+DATE_TARGET = 1609412400
+DATE_TARGET = os.time() + 70
 
 BASE_WIDTH = 320
 BASE_HEIGHT = 180
@@ -35,6 +36,7 @@ end
 function love.update(dt)
     background_update(dt)
     PHASE.update(dt)
+    print(os.time())
 end
 
 -- How to draw stuff 
