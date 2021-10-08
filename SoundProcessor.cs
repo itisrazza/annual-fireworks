@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media;
 
 namespace NY2022
 {
@@ -39,6 +40,15 @@ namespace NY2022
         public void Stop()
         {
             _waveIn.StopRecording();
+        }
+
+        public float Boppyness()
+        {
+            if (Amplitudes.Length == 0) return 0;
+
+            // isolate the bottom bit
+            var amps = new ArraySegment<double>(Amplitudes, 0, 100);
+            return 1 + (float)amps.Average() / 500 / 100;
         }
 
         private void OnDataAvailable(object? _, WaveInEventArgs e)

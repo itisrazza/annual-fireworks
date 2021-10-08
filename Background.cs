@@ -13,9 +13,13 @@ namespace NY2022
         private float _hue = 223;
 
         private const float BackgroundHueOffset = 0;
-        private const float CircleHueOffset = -40;
+        private const float CircleHueOffset = -360/3;
         private const float Saturation = 1f;
         private const float Lightness = 0.27f;
+
+        private float CircleRadius = 964f / 3;
+        private float _circleActualScale = 1;
+        public float CircleScale = 1;
 
         public void Draw()
         {
@@ -24,13 +28,16 @@ namespace NY2022
 
             Program.Window.Clear(HSL(_hue + BackgroundHueOffset, Saturation, Lightness));
 
-            var circle = new CircleShape(964 / 2, 200)
+            var circle = new CircleShape(CircleRadius, 200)
             {
                 Position = new(Program.BaseWidth / 2, Program.BaseHeight / 2),
-                Origin = new(964 / 2, 964 / 2),
+                Origin = new(CircleRadius, CircleRadius),
                 FillColor = HSL(_hue + CircleHueOffset, Saturation, Lightness),
+                Scale = new(_circleActualScale, _circleActualScale),
             };
             Program.Window.Draw(circle);
+
+            _circleActualScale += 0.5f * (CircleScale - _circleActualScale) / 2;
         }
 
         public void AdvanceColor(float extent)

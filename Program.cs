@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
+using Windows.Media.Control;
 
 namespace NY2022
 {
@@ -16,7 +17,9 @@ namespace NY2022
         public const int BaseHeight = 720;
 
         public static RenderWindow? Window { get; private set; }
-        public static SoundProcessor? SoundProcessor { get; private set;  }
+        public static SoundProcessor? SoundProcessor { get; private set; }
+
+        private static GlobalSystemMediaTransportControlsSessionManager MediaTransportControls;
 
         public static Font ChivoLight, ChivoRegular, ChivoBold, ChivoBlack;
 
@@ -64,6 +67,7 @@ namespace NY2022
             Debug.Assert(Window != null);
             Debug.Assert(SoundProcessor != null);
 
+            Background.CircleScale = 1 + 1 * SoundProcessor.Boppyness();
             Background.Draw();
 
             //
@@ -72,17 +76,17 @@ namespace NY2022
             var hourText = new Text(now.Hour.ToString().PadLeft(2, '0'), ChivoBlack, 300)
             {
                 Position = new(80, 40),
-                Color = Color.White
+                FillColor = Color.White
             };
             var minText = new Text(now.Minute.ToString().PadLeft(2, '0'), ChivoRegular, 300)
             {
                 Position = new(440, 167),
-                Color = Color.White
+                FillColor = Color.White
             };
             var secText = new Text(now.Second.ToString().PadLeft(2, '0'), ChivoLight, 300)
             {
                 Position = new(820, 282),
-                Color = Color.White
+                FillColor = Color.White
             };
 
 
@@ -98,30 +102,12 @@ namespace NY2022
             var yScale = 1;
             var xStep = (double)BaseWidth / (frequencyCount - 1);
             var x = 0.0;
-            var lastAmplitude = double.NaN;
-            var vertex = new VertexArray(PrimitiveType.LinesStrip);
+            var vertex = new VertexArray(PrimitiveType.LineStrip);
             for (var i = 0; i < frequencyCount; i++)
             {
                 var amplitude = frequencies[i];
-
-                // draw the point
-                var point = new RectangleShape(new Vector2f(1, 1))
-                {
-                    Position = new((float)x - 0, (float)(y - amplitude * yScale) - 0),
-                    FillColor = Color.White,
-                };
-
-                if (i % 250 == 0)
-                {
-                    var text = new Text(i.ToString(), ChivoRegular, 14) { Position = new((float)x, BaseHeight / 2), Rotation = 45};
-                    Window.Draw(text);
-                }
-
-                Window.Draw(point);
-
-                lastAmplitude = amplitude;
                 x += xStep;
-                vertex.Append(new Vertex(point.Position, Color.White));
+                vertex.Append(new Vertex(new((float)x - 0, (float)(y - amplitude * yScale) - 0), Color.White));
             }
             Window.Draw(vertex);
         }
