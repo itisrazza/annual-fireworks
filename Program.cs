@@ -19,11 +19,23 @@ namespace NY2022
         public static RenderWindow? Window { get; private set; }
         public static SoundProcessor? SoundProcessor { get; private set; }
 
-        private static GlobalSystemMediaTransportControlsSessionManager MediaTransportControls;
-
         public static Font ChivoLight, ChivoRegular, ChivoBold, ChivoBlack;
 
+        public static DateTime CountdownTo = DateTime.Now + TimeSpan.FromSeconds(120);
+
         private static Background Background = new Background();
+
+        private static IDisplay? _currentDisplay = null;
+        private static IDisplay? _nextDisplay = null;
+
+        public static IDisplay? CurrentDisplay
+        {
+            get => _currentDisplay;
+            set
+            {
+                _nextDisplay = value;
+            }
+        }
 
         /// <summary>
         ///  The main entry point for the application.
@@ -43,6 +55,7 @@ namespace NY2022
             Window = new(new(BaseWidth, BaseHeight), "Happy New Year! 2022", SFML.Window.Styles.Default);
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (sender, e) => Window.Close();
+            CurrentDisplay = new TimeDisplay();
 
             SoundProcessor = new SoundProcessor();
             SoundProcessor.Start();
@@ -50,13 +63,30 @@ namespace NY2022
             while (Window.IsOpen)
             {
                 Window.DispatchEvents();
+                if (_nextDisplay != null)
+                {
+                    _currentDisplay?.Dispose();
+                    _currentDisplay = _nextDisplay;
+                    _nextDisplay = null;
+                }
 
                 Window.Clear();
                 DrawWindow();
                 Window.Display();
-                
+
                 var frequencies = SoundProcessor.Amplitudes;
                 Background.AdvanceColor(0.0001f * (float)frequencies.Sum());
+
+                // check the time
+                var countdown = Countdown();
+                if (countdown.TotalSeconds < 10)
+                {
+                    CurrentDisplay = new CountownDisplay();
+                }
+                else if (countdown.TotalSeconds <= 0)
+                {
+                    // change to 2022 display
+                }
             }
 
             SoundProcessor.Stop();
@@ -67,32 +97,10 @@ namespace NY2022
             Debug.Assert(Window != null);
             Debug.Assert(SoundProcessor != null);
 
-            Background.CircleScale = 1 + 1 * SoundProcessor.Boppyness();
+            Background.CircleScale = 1 + 0.1f * SoundProcessor.Boppyness();
             Background.Draw();
 
-            //
-
-            var now = DateTime.Now;
-            var hourText = new Text(now.Hour.ToString().PadLeft(2, '0'), ChivoBlack, 300)
-            {
-                Position = new(80, 40),
-                FillColor = Color.White
-            };
-            var minText = new Text(now.Minute.ToString().PadLeft(2, '0'), ChivoRegular, 300)
-            {
-                Position = new(440, 167),
-                FillColor = Color.White
-            };
-            var secText = new Text(now.Second.ToString().PadLeft(2, '0'), ChivoLight, 300)
-            {
-                Position = new(820, 282),
-                FillColor = Color.White
-            };
-
-
-            Window.Draw(hourText);
-            Window.Draw(minText);
-            Window.Draw(secText);
+            CurrentDisplay?.Draw();
 
             // plot the frequencies
             var frequencies = SoundProcessor.Amplitudes;
@@ -110,6 +118,11 @@ namespace NY2022
                 vertex.Append(new Vertex(new((float)x - 0, (float)(y - amplitude * yScale) - 0), Color.White));
             }
             Window.Draw(vertex);
+        }
+
+        public static TimeSpan Countdown()
+        {
+            return CountdownTo - DateTime.Now;
         }
     }
 }

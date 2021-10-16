@@ -13,7 +13,7 @@ namespace NY2022
         private float _hue = 223;
 
         private const float BackgroundHueOffset = 0;
-        private const float CircleHueOffset = -360/3;
+        private const float CircleHueOffset = -360 / 3;
         private const float Saturation = 1f;
         private const float Lightness = 0.27f;
 
@@ -65,11 +65,11 @@ namespace NY2022
                 < 240 => (0, x, c),
                 < 300 => (x, 0, c),
                 < 360 => (c, 0, x),
-                _ => throw new ArgumentException ("what happened?")
+                _ => throw new ArgumentException("what happened?")
             };
 
             return new Color(
-                (byte)(255 * (color.R + m)), 
+                (byte)(255 * (color.R + m)),
                 (byte)(255 * (color.G + m)),
                 (byte)(255 * (color.B + m)));
         }

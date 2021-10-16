@@ -48,7 +48,7 @@ namespace NY2022
 
             // isolate the bottom bit
             var amps = new ArraySegment<double>(Amplitudes, 0, 100);
-            return 1 + (float)amps.Average() / 500 / 100;
+            return 1 + (float)amps.Max() / 500;
         }
 
         private void OnDataAvailable(object? _, WaveInEventArgs e)
